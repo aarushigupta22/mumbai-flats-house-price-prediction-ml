@@ -14,6 +14,7 @@ from sklearn.metrics import mean_absolute_error
 @st.cache_data
 def load_data():
     df = pd.read_csv("Mumbai House Prices.csv")
+    df.replace([np.inf, -np.inf], np.nan, inplace=True)
     return df
 
 # Data Preprocessing
@@ -30,7 +31,7 @@ def preprocess_data(df):
     lower_limit_area = df1['area'].mean() - 3 * df1['area'].std()
     df1.loc[df1['area'] > upper_limit_area, 'area'] = upper_limit_area
     df1.loc[df1['area'] < lower_limit_area, 'area'] = lower_limit_area
-    
+    df1['area'] = df1['area'].astype(int) 
     upper_limit_price = df1['price_lakhs'].mean() + 3 * df1['price_lakhs'].std()
     lower_limit_price = df1['price_lakhs'].mean() - 3 * df1['price_lakhs'].std()
     df1.loc[df1['price_lakhs'] > upper_limit_price, 'price_lakhs'] = upper_limit_price
